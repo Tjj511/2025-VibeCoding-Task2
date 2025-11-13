@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>大小傑工作室 · 前端開發個人網站</title>
+  <title>Code Artisan · 前端開發個人網站</title>
   
   <meta name="description" content="歡迎來到 Code Artisan 的個人品牌網站。本站展示了我的專業前端技能、精選作品集、個人背景介紹，並提供完整的聯絡方式。尋找專業的前端開發者？就是我。">
 
@@ -270,32 +270,97 @@
     /*----------------------------------------*/
 
     /* CSS:ABOUT-START */
-    /* * About 區塊樣式 (占位)
+    /* * About 區塊樣式 (v2 - SDD)
      * (禁止使用 ID 選擇器)
      */
-    .section-about .about-content {
-      text-align: center;
-      max-width: 700px;
+    
+    /* Mobile-first: 預設 .about-layout 是單欄 */
+    .about-layout {
+      /* RWD (min-width: 768px) 會將其改為 grid */
+      max-width: 700px; /* 在手機上限制最大寬度，使其居中 */
       margin: 0 auto;
     }
 
-    .about-image {
-      max-width: 250px;
-      border-radius: 50%;
-      margin: 0 auto 2rem auto;
-      border: 5px solid var(--color-border);
+    .about-text-content p {
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    .about-strengths-list {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .about-strengths-list li {
+      position: relative;
+      padding-left: 2rem; /* 留出空間給 icon */
+      font-weight: 500;
+    }
+
+    .about-strengths-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--color-primary);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .about-image-wrapper {
+      margin-top: 2.5rem; /* 手機版時，圖片在文字下方 */
     }
     
-    .placeholder-notice {
-      font-style: italic;
-      color: #888;
-      margin-top: 2rem;
-      border: 1px dashed var(--color-border);
-      padding: 1rem;
-      border-radius: 4px;
+    .about-image-new {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 3px solid var(--color-border);
+      aspect-ratio: 4 / 3; /* 保持圖片比例 */
+      object-fit: cover;
     }
-    .placeholder-notice p {
-      margin-bottom: 0;
+
+    .about-buttons {
+      display: flex;
+      flex-wrap: wrap; /* 換行 */
+      gap: 1rem;
+    }
+
+    .about-btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 4px;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+    
+    .about-btn-primary {
+      background-color: var(--color-primary);
+      color: var(--color-bg);
+    }
+    .about-btn-primary:hover {
+      background-color: var(--color-text);
+      color: var(--color-bg);
+      opacity: 1; /* 覆蓋 global a:hover */
+    }
+
+    .about-btn-secondary {
+      background-color: transparent;
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    .about-btn-secondary:hover {
+      background-color: var(--color-primary);
+      color: var(--color-bg);
+      opacity: 1; /* 覆蓋 global a:hover */
     }
     
     /* CSS:ABOUT-END */
@@ -430,6 +495,7 @@
       background-color: var(--color-primary);
       color: var(--color-bg);
       border-color: var(--color-primary);
+      opacity: 1; /* 覆蓋 global a:hover */
     }
     
     /* CSS:CONTACT-END */
@@ -460,22 +526,27 @@
         min-height: 500px;
       }
 
-      /* 4. About (RWD) */
-      .section-about .about-container {
+      /* 4. About (RWD) - v2 (SDD) - 替換此區塊 */
+      .section-about .about-layout {
         display: grid;
-        grid-template-columns: 250px 1fr; /* 圖片 + 文字 */
-        align-items: center;
+        grid-template-columns: 1fr 1fr;
         gap: 3rem;
-        text-align: left;
-      }
-
-      .about-image {
-        margin: 0;
+        align-items: start; /* 頂端對齊 */
+        max-width: 1100px; /* 覆蓋手機版的 max-width */
       }
       
-      .section-about .about-content {
-        text-align: left;
-        margin: 0; /* 重設 mobile 的 auto margin */
+      .section-about .about-image-wrapper {
+        margin-top: 0; /* 重設手機版的 margin-top */
+        /* 讓圖片在 grid 裡垂直置中 (或隨文字拉長) */
+        display: flex;
+        align-items: center;
+        height: 100%;
+      }
+      
+      .section-about .about-image-new {
+        height: 100%; /* 填滿 wrapper */
+        max-height: 450px; /* 避免圖片過高 */
+        object-fit: cover;
       }
 
       /* 5. Projects (RWD) */
@@ -495,7 +566,13 @@
       /* * 1024px (或 1440px) 的調整 
        * .container 的 max-width: 1100px 會自動生效
        */
-      
+       
+      /* 4. About (RWD) - 調整 grid-template-columns */
+      .section-about .about-layout {
+         /* 可在此調整欄位比例，例如 2fr 1fr */
+         grid-template-columns: 2fr 1fr;
+      }
+
       /* Projects (RWD) */
       .section-projects .projects-grid {
         grid-template-columns: repeat(3, 1fr); /* 三欄 */
@@ -530,10 +607,10 @@
 
       <section id="hero" class="section section-hero" aria-labelledby="hero-title">
         <div class="container hero-content">
-          <p class="hero-subtitle">Frontend Developer</p>
+          <p class="hero-subtitle">Frontend Developer (占位)</p>
           <h1 id="hero-title" class="hero-title">歡迎來到我的個人網站</h1>
-          <p class="hero-description">這裡是 Hero 區。未來這裡將會放上我的核心職稱、一句話自我介紹，以及「瀏覽作品集」或「下載履歷」的行動呼籲按鈕。</p>
-          <a href="#projects" class="hero-cta">查看作品集</a>
+          <p class="hero-description">這裡是 Hero 區的占位內容。未來這裡將會放上我的核心職稱、一句話自我介紹，以及「瀏覽作品集」或「下載履歷」的行動呼籲按鈕。</p>
+          <a href="#projects" class="hero-cta">查看作品集 (占位)</a>
           
           <div class="hero-placeholder-notice">
             <p><strong>開發者提示：</strong>之後會用 Section SDD 的 Prompt 產生新的 section，請把新的 section 程式碼整段貼在 <strong>&lt;!-- SECTION:HERO-START --&gt;</strong> 與 <strong>&lt;!-- SECTION:HERO-END --&gt;</strong> 註解中間，完全取代現在這一區。</p>
@@ -541,31 +618,45 @@
         </div>
       </section>
       <section id="about" class="section section-about" aria-labelledby="about-heading">
-        <div class="container about-container">
-          <div>
-            <img src="https://source.unsplash.com/400x400/?developer,portrait,coding" alt="一位專業開發者的示意頭像" loading="lazy" class="about-image">
-          </div>
-          <div class="about-content">
-            <h2 id="about-heading" class="section-title">關於我</h2>
-            <p>這裡是 About 區。之後會用 Section SDD 產生更完整的圖文介紹，包含我的背景、經歷與理念。</p>
-            <div class="placeholder-notice">
-              <p><strong>開發者提示：</strong>之後會用 Section SDD 的 Prompt 產生新的 section，請把新的 section 程式碼整段貼在 <strong>&lt;!-- SECTION:ABOUT-START --&gt;</strong> 與 <strong>&lt;!-- SECTION:ABOUT-END --&gt;</strong> 註解中間，完全取代現在這一區。</p>
+        <div class="container">
+          <h2 id="about-heading" class="section-title">關於我</h2>
+          
+          <div class="about-layout">
+            <div class="about-text-content">
+              <p>我是一名專注於前端開發的工程師，同時也熱衷於技術教學與自由接案。我擅長使用 React、Vue 與 TypeScript，致力於打造高效能且易於維護的網頁應用。</p>
+              <p>我重視團隊間的透明溝通與協作。我喜歡將複雜的概念拆解成易懂的模組，無論是在程式碼中，還是在教學上，都追求清晰與簡潔。</p>
+              
+              <ul class="about-strengths-list">
+                <li>高效能的網頁架構與效能調校</li>
+                <li>跨團隊的協作溝通與專案管理</li>
+                <li>客製化的前端技術教學與諮詢</li>
+              </ul>
+              
+              <div class="about-buttons">
+                <a href="#projects" class="about-btn about-btn-primary">查看作品集</a>
+                <a href="#contact" class="about-btn about-btn-secondary">聯絡我</a>
+              </div>
+            </div>
+            
+            <div class="about-image-wrapper">
+              <img src="https://source.unsplash.com/600x600/?developer,coding,laptop" alt="一位在辦公桌前專注於在筆電上撰寫程式碼的前端工程師" loading="lazy" class="about-image-new">
             </div>
           </div>
+          
         </div>
       </section>
       <section id="skills" class="section section-skills" aria-labelledby="skills-heading">
         <div class="container">
-          <h2 id="skills-heading" class="section-title">專業技能</h2>
-          <p class="skills-placeholder-text">這裡是 Skills 區。未來會用 Section SDD 產生分類好的技能清單（例如：前端技術、後端技術、工具等）。</p>
+          <h2 id="skills-heading" class="section-title">專業技能 (占位)</h2>
+          <p class="skills-placeholder-text">這裡是 Skills 區的占位內容。未來會用 Section SDD 產生分類好的技能清單（例如：前端技術、後端技術、工具等）。</p>
           
           <ul class="skills-grid">
-            <li class="skill-item">HTML</li>
-            <li class="skill-item">CSS</li>
-            <li class="skill-item">React</li>
-            <li class="skill-item">Node.js</li>
-            <li class="skill-item">Git</li>
-            <li class="skill-item">TypeScript</li>
+            <li class="skill-item">HTML (占位)</li>
+            <li class="skill-item">CSS (占位)</li>
+            <li class="skill-item">React (占位)</li>
+            <li class="skill-item">Node.js (占位)</li>
+            <li class="skill-item">Git (占位)</li>
+            <li class="skill-item">TypeScript (占位)</li>
           </ul>
           
           <div class="placeholder-notice" style="max-width: 600px; margin: 2rem auto 0 auto; text-align: center;">
@@ -575,21 +666,21 @@
       </section>
       <section id="projects" class="section section-projects" aria-labelledby="projects-heading">
         <div class="container">
-          <h2 id="projects-heading" class="section-title">作品集</h2>
-          <p class="projects-placeholder-text">這裡是 Projects 區。未來會用 Section SDD 產生以「卡片 (Card)」形式呈現的專案列表。</p>
+          <h2 id="projects-heading" class="section-title">作品集 (占位)</h2>
+          <p class="projects-placeholder-text">這裡是 Projects 區的占位內容。未來會用 Section SDD 產生以「卡片 (Card)」形式呈現的專案列表。</p>
           
           <div class="projects-grid">
             <div class="project-card">
               <img src="https://source.unsplash.com/800x600/?website,project,tech" alt="網站專案示意圖" loading="lazy" class="project-card-image">
               <div class="project-card-content">
-                <h3 class="project-card-title">專案名稱</h3>
+                <h3 class="project-card-title">專案名稱 (占位)</h3>
                 <p>這裡將會是專案的簡短描述。點擊可查看更多詳情。</p>
               </div>
             </div>
             <div class="project-card">
               <img src="https://source.unsplash.com/800x600/?development,code,laptop" alt="程式碼示意圖" loading="lazy" class="project-card-image">
               <div class="project-card-content">
-                <h3 class="project-card-title">專案名稱</h3>
+                <h3 class="project-card-title">專案名稱 (占位)</h3>
                 <p>這裡將會是專案的簡短描述。點擊可查看更多詳情。</p>
               </div>
             </div>
@@ -602,13 +693,13 @@
       </section>
       <section id="contact" class="section section-contact" aria-labelledby="contact-heading">
         <div class="container contact-content">
-          <h2 id="contact-heading" class="section-title">聯絡我</h2>
-          <p>這裡是 Contact 區。未來會用 Section SDD 產生完整的聯絡方式清單或聯絡表單。</p>
+          <h2 id="contact-heading" class="section-title">聯絡我 (占位)</h2>
+          <p>這裡是 Contact 區的占位內容。未來會用 Section SDD 產生完整的聯絡方式清單或聯絡表單。</p>
           
           <ul class="contact-links">
-            <li><a href="mailto:hello@example.com">Email</a></li>
-            <li><a href="https://github.com/Tjj511/2025-VibeCoding-Task2/actions/runs/19323761981" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-            <li><a href="https://www.linkedin.com/in/yourname" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="mailto:hello@example.com">Email (占位)</a></li>
+            <li><a href="https://github.com/yourname" target="_blank" rel="noopener noreferrer">GitHub (占位)</a></li>
+            <li><a href="https://www.linkedin.com/in/yourname" target="_blank" rel="noopener noreferrer">LinkedIn (占位)</a></li>
           </ul>
           
           <div class="placeholder-notice" style="margin-top: 2rem;">
@@ -625,7 +716,7 @@
           <li><a href="https://github.com/yourname" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GitHub</a></li>
           <li><a href="https://www.linkedin.com/in/yourname" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a></li>
         </ul>
-        <p>&copy; 2025 大小傑工作室. 保留所有權利。</p>
+        <p>&copy; 2025 Code Artisan · 前端工坊. 保留所有權利。</p>
       </div>
     </footer>
 
